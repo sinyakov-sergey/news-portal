@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чтение файла</title>
+</head>
+<body>
+<h2>Выберете zip-файл для загрузки сатьи</h2>
+<h3>-В zip-файле должен содержаться article.txt</h3>
+<h3>-В article.txt должно быть не менее 2 строк(первая строка-Заголовок статьи)</h3>
+
+<input type="file" id="file" accept="application/zip">
+<select id="selectCategory">
+    <option value="рубрика">Выберете рубрику</option>
+    <option value="Спорт">Спорт</option>
+    <option value="Финансы">Финансы</option>
+    <option value="Путешествия">Путешествия</option>
+    <option value="Политика">Политика</option>
+</select>
+<button>Загрузить статью</button>
+<br>
+<br>
+<button onclick="window.location.href = 'index.html'">Вернуться на главную страницу</button>
+
+
+<script>
+    document.querySelector('button').addEventListener('click', function() {
+        let file = document.getElementById('file').files[0];
+        var categoryIndex = document.getElementById("selectCategory").options.selectedIndex;
+        var category = document.getElementById("selectCategory").options[categoryIndex];
+        if (categoryIndex === 0) alert('Выберете рубрику статьи');
+        else uploadFile(file, category);
+    })
+
+    async function uploadFile(file, category){
+        const res = await fetch('http://localhost:8080/upload', [file, category]);
+
+        if (res === true) alert("true");
+    }
+
+    window.addEventListener('DOMContentLoaded', getAllArticles)
+</script>
+</body>
+</html>
