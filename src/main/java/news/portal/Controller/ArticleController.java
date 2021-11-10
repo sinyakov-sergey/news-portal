@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    //@CrossOrigin(origins = "http://localhost:3000")
     @CrossOrigin(origins = "http://localhost:63342")
     @PostMapping("/upload")
     public ResponseEntity<?> uploadArticle(@RequestParam("file") MultipartFile file,

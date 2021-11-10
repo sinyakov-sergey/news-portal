@@ -33,7 +33,6 @@
             else if (categoryIndex === 0) alert('Выберете рубрику статьи');
             else {
                 uploadFile(file, category);
-                // window.location.href = 'index.html';
             }
 
         })
@@ -45,11 +44,9 @@
             await fetch('http://localhost:8080/upload', {method:'POST', body:data})
                 .then(response => response.json())
                 .then(data => {
-                    alert(data.statusText)
                     console.log(data)
                 })
                 .catch(error => {
-                    alert(error.toString())
                     console.error(error)
                 })
         }

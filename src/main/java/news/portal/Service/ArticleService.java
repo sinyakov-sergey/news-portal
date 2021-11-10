@@ -36,7 +36,9 @@ public class ArticleService {
     }
 
     public boolean uploadFile(MultipartFile file, String category) throws IOException {
-        if (file.isEmpty())return false;
+        if (file.isEmpty()) {
+            throw new NumberOfFilesException("Zip-файл пуст!");
+        }
         ArticleEntity articleEntity = getArticleFromZip(file, category);
         articleRepository.save(articleEntity);
         return true;
@@ -51,10 +53,10 @@ public class ArticleService {
         while ((zipEntry = zipInputStream.getNextEntry()) != null) {
             numberOfFiles++;
             if (numberOfFiles > 1) {
-                throw new NumberOfFilesException("Too much files in zip");
+                throw new NumberOfFilesException("В Zip-файле много файлов!");
             }
             if (!zipEntry.getName().equals("article/article.txt")) {
-                throw new FileFormatException("File format not supported");
+                throw new FileFormatException("Расширение файла статье не поддерживается!");
             }
             Scanner scanner = new Scanner(zipInputStream);
             head = getHead(scanner);
@@ -67,7 +69,7 @@ public class ArticleService {
         if (scanner.hasNextLine()) {
             return scanner.nextLine();
         } else {
-            throw new TextFileException("There is not title in the Article");
+            throw new TextFileException("Отсутсвует заголовок статьи!");
         }
     }
 
@@ -77,7 +79,7 @@ public class ArticleService {
             text.append(scanner.nextLine()).append(" ");
         }
         if (text.length() < 1) {
-            throw new TextFileException("There is not text in the Article");
+            throw new TextFileException("Отсутсвует текст статьи!");
         } else {
             return text.toString();
         }
